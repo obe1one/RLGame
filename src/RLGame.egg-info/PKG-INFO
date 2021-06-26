@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: RLGame
+Version: 0.0.1
+Summary: RLGame is a package provides multi-agent implementation of some classic games for Reinforcement Learning (RL).
+Home-page: https://github.com/obe1one/RLGame
+Author: Chang-Sheng Kao
+Author-email: johnson30708@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/obe1one/RLGame
+Description: # RLGame
+        
+        ## Description
+        
+        RLGame is a package provides multi-agent implementation of some classic games for Reinforcement Learning (RL)
+        
+        ## Dependencies
+        
+        * pip
+        * numpy
+        * matplotlib
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
