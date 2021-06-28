@@ -2,7 +2,7 @@ import math
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from .const import *
+from RLGame.game2048.const import *
 
 class ActionSpace:
     def __init__(self):
@@ -218,6 +218,7 @@ class Game2048Env:
         if reward == -1:
             done = True
         else:
+            self.score += reward
             done = self._add_block()
 
         return self.board, reward, done, { "Info": "step" }
@@ -260,6 +261,9 @@ class Game2048Env:
         plt.show(block=False)
         plt.pause(ticks)
         plt.close()
+    
+    def get_score(self):
+        return self.score
 
 
 

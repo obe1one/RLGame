@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from .const import *
+from RLGame.snake.const import *
 
 class ActionSpace:
     def __init__(self):
