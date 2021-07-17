@@ -152,26 +152,6 @@ class SnakeGameEnv:
         
         for food in removed:
             self.foods.remove(food)
-        
-        perm = np.random.permutation(row * col)
-        while eaten > 0:
-            new_pos = (perm[index] // col, perm[index] % col)
-            conflict = False
-            if self.snake_head[0] == list(new_pos):
-                conflict = True
-            for body in self.snake_body:
-                if list(body) == list(new_pos):
-                    conflict = True
-                    break
-            for food in self.foods:
-                if list(food) == list(new_pos):
-                    conflict = True
-                    break
-            index += 1
-            if conflict:
-                continue
-            self.foods.append(new_pos)
-            eaten -= 1
 
         return reward
     
@@ -190,6 +170,7 @@ class SnakeGameEnv:
         dc = [0, 1, 0, -1]
         reward = 0
         prev_head = self.snake_head.copy()
+        row, col = self.board_shape
 
         if action == ACTION_RIGHT:
             self.direction = (self.direction + 1) % 4
@@ -210,6 +191,28 @@ class SnakeGameEnv:
             reward = self._eat_food()
             if reward > 0:
                 self.snake_body.append(prev_body)
+                perm = np.random.permutation(row * col)
+                index = 0
+
+                eaten = reward
+                while eaten > 0:
+                    new_pos = (perm[index] // col, perm[index] % col)
+                    conflict = False
+                    if self.snake_head == list(new_pos):
+                        conflict = True
+                    for body in self.snake_body:
+                        if list(body) == list(new_pos):
+                            conflict = True
+                            break
+                    for food in self.foods:
+                        if list(food) == list(new_pos):
+                            conflict = True
+                            break
+                    index += 1
+                    if conflict:
+                        continue
+                    self.foods.append(new_pos)
+                    eaten -= 1
         
         return reward
 
