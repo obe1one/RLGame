@@ -108,6 +108,7 @@ class SnakeGameEnv:
     def reset(self) -> list:
         self.snake_head = self.init_snake_head.copy()
         self._init_foods()
+        self.score = 0
         return self._get_state()
     
     def _in_map(self, pos):
