@@ -65,6 +65,25 @@ class SnakeGameEnv:
             self.foods.append(new_pos)
             n_foods += 1
             index += 1
+
+    def _get_body_danger(self) -> list:
+        """
+        Output:
+            [danger-up, danger-right, danger-down, danger-left]
+        """
+        danger = [0, 0, 0, 0]
+        head = self.snake_head
+        body = [list(b) for b in self.snake_body]
+        if [head[0] - 1, head[1]] in body:
+            danger[0] = 1
+        if [head[0], head[1] + 1] in body:
+            danger[1] = 1
+        if [head[0] + 1, head[1]] in body:
+            danger[2] = 1
+        if [head[0], head[1] - 1] in body:
+            danger[3] = 1
+        return danger
+
     
     def _get_state(self) -> list:
         """
@@ -75,22 +94,24 @@ class SnakeGameEnv:
         """
         row, col = self.board_shape
         state = [0] * 11
+        body_danger = self._get_body_danger()
+
         if self.direction == DIR_UP:
-            state[0] = 1 if self.snake_head[0] == 0 else 0
-            state[1] = 1 if self.snake_head[1] == col - 1 else 0
-            state[2] = 1 if self.snake_head[1] == 0 else 0
+            state[0] = 1 if self.snake_head[0] == 0 or body_danger[0] == 1 else 0
+            state[1] = 1 if self.snake_head[1] == col - 1 or body_danger[1] == 1 else 0
+            state[2] = 1 if self.snake_head[1] == 0 or body_danger[3] == 1 else 0
         elif self.direction == DIR_RIGHT:
-            state[0] = 1 if self.snake_head[1] == col - 1 else 0
-            state[1] = 1 if self.snake_head[0] == row - 1 else 0
-            state[2] = 1 if self.snake_head[0] == 0 else 0
+            state[0] = 1 if self.snake_head[1] == col - 1 or body_danger[1] == 1 else 0
+            state[1] = 1 if self.snake_head[0] == row - 1 or body_danger[2] == 1 else 0
+            state[2] = 1 if self.snake_head[0] == 0 or body_danger[0] == 1 else 0
         elif self.direction == DIR_DOWN:
-            state[0] = 1 if self.snake_head[0] == row - 1 else 0
-            state[1] = 1 if self.snake_head[1] == 0 else 0
-            state[2] = 1 if self.snake_head[1] == col - 1 else 0
+            state[0] = 1 if self.snake_head[0] == row - 1 or body_danger[2] == 1 else 0
+            state[1] = 1 if self.snake_head[1] == 0 or body_danger[3] == 1 else 0
+            state[2] = 1 if self.snake_head[1] == col - 1 or body_danger[1] == 1 else 0
         elif self.direction == DIR_LEFT:
-            state[0] = 1 if self.snake_head[1] == 0 else 0
-            state[1] = 1 if self.snake_head[0] == 0 else 0
-            state[2] = 1 if self.snake_head[0] == row - 1 else 0
+            state[0] = 1 if self.snake_head[1] == 0 or body_danger[3] == 1 else 0
+            state[1] = 1 if self.snake_head[0] == 0 or body_danger[0] == 1 else 0
+            state[2] = 1 if self.snake_head[0] == row - 1 or body_danger[2] == 1 else 0
         
         state[self.direction + 3] = 1
         for food in self.foods:
